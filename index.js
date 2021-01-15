@@ -3,12 +3,18 @@ import expressGraphql from "express-graphql";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import mercadopago from 'mercadopago';
+import schema from "./schema/schema.js";
+
+mercadopago.configure({
+    access_token: 'YOUR_ACCESS_TOKEN'
+});
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors);
+app.use(cors());
 
 const {graphqlHTTP} = expressGraphql;
 
@@ -21,7 +27,7 @@ mongoose.connect(
 .catch(err => console.log(`[Error]: ${err}`));
 
 app.use('/graphql', graphqlHTTP({
-    schema: null,
+    schema,
     graphiql: true
 }));
 
